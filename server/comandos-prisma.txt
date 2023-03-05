@@ -1,0 +1,9 @@
+configurar:
+ npm install prisma --save-dev                                (instala o prisma como depêndencia dev)
+ npm install @prisma/client                                   (parte do cliente do prisma)
+ npx prisma init --datasource-provider SQLite                 (faz com que o banco de dados utilizado seja do tipo sqlite)
+
+
+
+npx prisma migrate dev
+npx prisma studio                                             (abre uma interface online para visualizar/navegar pelo banco de dados)
