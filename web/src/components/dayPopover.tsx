@@ -33,7 +33,6 @@ export default function DayPopover(props: propsType) {
         })
             .then(response => {
                 setDayData(response.data);
-                console.log(response.data)
             })
             .catch(err => console.log(err))
     }, [])

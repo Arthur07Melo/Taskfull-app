@@ -1,24 +1,66 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
+import { useRef, useState } from "react";
 import { Check } from "phosphor-react";
-import { FormEvent } from "react";
+import { useForm } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form/dist/types";
+import { api } from "../lib/axios";
 
 const weekDays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 
+type FormInput = {
+    title: string,
+    description: string,
+    HabitWeekDays: string[]
+}
+
+
 export function TaskAdder() {
+    const { register, handleSubmit } = useForm<FormInput>();
+    const [ habitWeekDays, setHabitWeekDays ] = useState<number[]>([]);
+
+    const onSubmit: SubmitHandler<FormInput> = (data) => {
+        api.post("/habit", {
+            title: data.title,
+            description: data.description,
+            HabitWeekDays: habitWeekDays
+        }).then(() => {
+            console.log(`dados enviados, data: ${data}`);
+        }).catch((err) => {console.log(err)})
+        window.location.reload();
+    }
+
+    const handleChange = (index: number) => {
+        const newHabitWeekDays = habitWeekDays;
+
+        if(habitWeekDays.includes(index)){
+            newHabitWeekDays.splice(newHabitWeekDays.indexOf(index), 1);
+        }
+        else{
+            newHabitWeekDays.push(index);
+        }
+        
+        setHabitWeekDays(newHabitWeekDays);
+        console.log(newHabitWeekDays, habitWeekDays);
+    }
+
     return (
         <div>
-            <form className="flex flex-col my-5" action="http://localhost:5000/habit" method="post">
+            <form className="flex flex-col my-5" onSubmit={handleSubmit(onSubmit)} method="post">
                 <label htmlFor="title">What is the title of the task? </label>
-                <input className="bg-zinc-700 rounded-md px-2" type="text" name="title" placeholder="Title" />
+                <input className="bg-zinc-700 rounded-md px-2" type="text" {...register("title", { required: true })} placeholder="Title" />
                 <label htmlFor="description">Describe the task: </label>
-                <textarea className="bg-zinc-700 rounded-md px-2 mb-5" name="description" cols={30} rows={5} placeholder="Description"></textarea>
+                <textarea className="bg-zinc-700 rounded-md px-2 mb-5" {...register("description", { required: true })} cols={30} rows={5} placeholder="Description"></textarea>
 
                 {weekDays.map((weekDay, index) => {
                     return (
                         <div className="flex items-center" key={index}>
-                            <Checkbox.Root className="bg-gray-600 w-[25px] h-[25px] rounded-md data-[state=checked]:bg-green-600 focus:border" name="HabitWeekDays" value={index} id={weekDay}>
+                            <Checkbox.Root
+                                onCheckedChange={(checked) => { handleChange(index) }}
+                                className="bg-gray-600 w-[25px] h-[25px] rounded-md data-[state=checked]:bg-green-600 focus:border"
+                                value={index}
+                                id={weekDay}>
                                 <Checkbox.Indicator>
-                                    <Check size={24} color="white"/>
+                                    <Check size={24} color="white" />
                                 </Checkbox.Indicator>
 
                             </Checkbox.Root>
