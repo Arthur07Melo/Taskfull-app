@@ -6,14 +6,22 @@ import morgan from "morgan";
 import habits from "../routes/habits";
 import days from "../routes/days";
 import helmet from "helmet";
+import users from "../routes/users"
+import { userAuth } from "../middlewares/users";
 
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("tiny"));
+
+
+app.use("/user", users);
+
+app.use(userAuth);
 app.use("/habit", habits);
 app.use("/day", days);
+
 
 
 app.all("*", (req: express.Request, res: express.Response) => {

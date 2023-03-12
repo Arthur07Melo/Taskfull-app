@@ -14,6 +14,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       String @id @default(cuid())
+  username String
+  email    String
+  password String
+
+  @@unique([email])
+  @@map("users")
+}
+
 model Habit {
   id           String         @id @default(uuid()) //unic universal identifier      - @id indica primary key
   title        String
