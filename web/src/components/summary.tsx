@@ -13,6 +13,8 @@ type summaryDay = {
     amount?: number
 }[]
 
+
+
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
 const summaryDates = generateDatesFrom30dAgo();

@@ -9,7 +9,7 @@ import isBeforeToday from "../utils/is-before-today";
 const weekDays = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
 
 type propsType = {
-    date?: Date
+    date?: Date,
 }
 
 interface dayDataType {
@@ -29,8 +29,8 @@ export default function DayPopover(props: propsType) {
 
     useEffect(() => {
         api.get("/day", {
-            params: { date: props.date?.toDateString() }
-        })
+            params: { date: props.date?.toDateString() },
+        },)
             .then(response => {
                 setDayData(response.data);
             })

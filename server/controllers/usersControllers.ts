@@ -56,26 +56,31 @@ const loginUser = async (req: Request, res: Response) => {
         email: z.string().email(),
         password: z.string().max(16)
     })
-    const { email, password } = ReqBody.parse(req.body);
+    try{
+        const { email, password } = ReqBody.parse(req.body);
 
-    const user = await prisma.user.findUnique({ where: { email: email } });
-    if (!user) {
-        return res.status(400).json({ message: "incorrect email or password." });
+        const user = await prisma.user.findUnique({ where: { email: email } });
+        if (!user) {
+            return res.status(400).json({ message: "incorrect email or password." });
+        }
+
+        const correctPassword = await bcrypt.compare(password, user.password);
+
+        if (!correctPassword) {
+            return res.status(400).json({ message: "incorrect email or password." });
+        }
+
+        const token = jwt.sign(
+            { id: user.id },
+            process.env.JWT_PASS!,
+            { expiresIn: "1h" }
+        );
+
+        res.status(200).json(token);
+    }catch(err){
+        console.log(err);
+        res.status(400).json(err);
     }
-
-    const correctPassword = await bcrypt.compare(password, user.password);
-
-    if (!correctPassword) {
-        return res.status(400).json({ message: "incorrect email or password." });
-    }
-
-    const token = jwt.sign(
-        { id: user.id },
-        process.env.JWT_PASS!,
-        { expiresIn: "1h" }
-    );
-
-    res.status(200).json(token);
 }
 
 

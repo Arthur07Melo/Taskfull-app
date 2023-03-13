@@ -8,7 +8,7 @@ const colorLevels = ["bg-gray-800", "bg-sky-800", "bg-sky-600", "bg-sky-500", "b
 
 type propsType = {
     level: number,
-    date?: Date
+    date?: Date,
 }
 
 export default function SummaryBlock(props: propsType) {
@@ -21,7 +21,7 @@ export default function SummaryBlock(props: propsType) {
 
             <Popover.Portal>
                 <Popover.Content className="bg-zinc-900 text-white p-10 rounded-xl min-w-[320px]">
-                    <DayPopover date={props.date}/>
+                    <DayPopover date={props.date} />
                 </Popover.Content>
             </Popover.Portal>
         </Popover.Root>

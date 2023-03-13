@@ -6,8 +6,9 @@ type PostType = {
     id: string
     title: string
     description: string
-    created_at: string
+    created_at: string,
 }
+
 
 
 export function Tasks() {
