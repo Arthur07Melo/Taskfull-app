@@ -15,10 +15,12 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   username String
   email    String
   password String
+  Habit    Habit[]
+  Day      Day[]
 
   @@unique([email])
   @@map("users")
@@ -32,6 +34,10 @@ model Habit {
   DayHabit     DayHabit[]
   HabitWeekDay HabitWeekDay[]
 
+  user   User   @relation(fields: [userId], references: [id])
+  userId String 
+
+  @@unique([userId])
   @@map("habits")
 }
 
@@ -52,7 +58,11 @@ model Day {
   date     DateTime
   DayHabit DayHabit[]
 
+  user   User   @relation(fields: [userId], references: [id])
+  userId String 
+
   @@unique([date])
+  @@unique([userId])
   @@map("days")
 }
 

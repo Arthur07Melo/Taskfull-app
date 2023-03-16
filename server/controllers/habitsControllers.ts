@@ -45,6 +45,11 @@ const addHabit = async (req: Request, res: Response) => {
 
     const habit = await prisma.habit.create({
         data: {
+            user: {
+                connect: {
+                    id: req.user.id,
+                }
+            },
             title: title,
             description: description,
             created_at: dayjs().startOf('day').toISOString(),
@@ -58,7 +63,7 @@ const addHabit = async (req: Request, res: Response) => {
         }
     });
 
-    res.status(204);
+    res.status(201);
 }
 
 

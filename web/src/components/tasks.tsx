@@ -25,10 +25,12 @@ export function Tasks() {
 
     return (
         <div className="max-w-2xl justify-center items-center">
-            <h1 className="text-xl py-4">Today's tasks: </h1>
+            <h1 className="min-w-[630px] text-xl py-4">Today's tasks: </h1>
             <ul>
-                {posts.map((post:PostType, i)=>(
-                    <li className="flex flex-col relative border border-gray-600 justify-between" key={i}>   
+                {posts.length==0 && <h1 className="text-md text-gray-600 px-2">No tasks available</h1>}
+
+                {posts && posts.map((post:PostType, i)=>(
+                    <li className="min-w-[630px] flex flex-col relative border border-gray-600 justify-between" key={i}>   
                         <input type="checkbox" className="peer absolute opacity-0 h-6 inset-x-0 cursor-pointer" />
                         <h1 className="px-4 float-left text-lg font-semibold">{post.title}</h1>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="

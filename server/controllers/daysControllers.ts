@@ -80,6 +80,11 @@ const toggleHabit = async (req: Request, res: Response) => {
     if (!day) {
         day = await prisma.day.create({
             data: {
+                user: {
+                    connect: {
+                        id: req.user.id,
+                    }
+                },
                 date: today
             },
             include: {
