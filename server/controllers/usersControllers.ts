@@ -15,7 +15,7 @@ const createUser = async (req: Request, res: Response) => {
     })
 
     const { username, email, password } = ReqBody.parse(req.body);
-
+    console.log(username, email, password);
     //check if user exists
     const userExists = await prisma.user.findUnique({
         where: {

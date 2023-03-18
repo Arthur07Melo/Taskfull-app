@@ -1,7 +1,7 @@
 import { Tasks } from './components/tasks';
 import Header from "./components/header";
 import Summary from './components/summary';
-import LoginPopover from './components/loginPopover';
+import LoginPage from './components/loginPage';
 import "./styles/global.css";
 import { useEffect, useState } from 'react';
 import { api } from './lib/axios';
@@ -52,7 +52,7 @@ function App(props: propsType) {
   return (
   <div className="w-screen h-screen bg-background text-white flex flex-col justify-center items-center">
 
-    {!logged && <LoginPopover onSubmit={loginSubmit} message={message} />}
+    {!logged && <LoginPage onSubmit={loginSubmit} message={message} />}
 
     {logged && 
       <div className='mt-3'>

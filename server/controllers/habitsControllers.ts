@@ -7,6 +7,11 @@ const prisma = new PrismaClient();
 
 const getAllHabits = async (req: Request, res: Response) => {
     const habits = await prisma.habit.findMany({
+        where:{
+            user: {
+                id: req.user.id
+            }
+        },
         include: { HabitWeekDay: true }
     });
     res.status(200);
@@ -22,7 +27,8 @@ const getSpecificHabit = async (req: Request, res: Response) => {
     const { habitID } = ReqBody.parse(req.params);
     const habit = await prisma.habit.findUnique({
         where: {
-            id: habitID
+            id: habitID,
+            userId: req.user.id
         },
         include: { HabitWeekDay: true }
     })

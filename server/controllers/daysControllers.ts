@@ -30,6 +30,7 @@ const getDay = async (req: Request, res: Response) => {
             created_at: {
                 lte: date
             },
+            userId: req.user.id,
             HabitWeekDay: {
                 some: {
                     week_day: weekDay
@@ -39,9 +40,10 @@ const getDay = async (req: Request, res: Response) => {
     });
     //se o habito tiver sido criado após a data, e estiver disponivel no dia da semana
 
-    const day = await prisma.day.findUnique({
+    const day = await prisma.day.findFirst({
         where: {
-            date: date
+            date: date,
+            userId: req.user.id
         },
         include: {
             DayHabit: true
@@ -68,9 +70,10 @@ const toggleHabit = async (req: Request, res: Response) => {
 
     const today = dayjs().startOf('day').toDate();
 
-    let day = await prisma.day.findUnique({
+    let day = await prisma.day.findFirst({
         where: {
-            date: today
+            date: today,
+            userId: req.user.id
         },
         include: {
             DayHabit: true
@@ -149,6 +152,7 @@ const getSummary = async (req: Request, res: Response) => {
                 HWD.week_day = cast(strftime('%w', D.date/1000, 'unixepoch') as int )
         )   as amount
     FROM days D
+    WHERE D.userId = ${req.user.id}
     `
 
     res.status(200);
