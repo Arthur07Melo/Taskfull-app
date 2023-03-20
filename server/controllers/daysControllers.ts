@@ -30,7 +30,7 @@ const getDay = async (req: Request, res: Response) => {
             created_at: {
                 lte: date
             },
-            userId: req.user.id,
+            user_id: req.user.id,
             HabitWeekDay: {
                 some: {
                     week_day: weekDay
@@ -43,7 +43,7 @@ const getDay = async (req: Request, res: Response) => {
     const day = await prisma.day.findFirst({
         where: {
             date: date,
-            userId: req.user.id
+            user_id: req.user.id
         },
         include: {
             DayHabit: true
@@ -73,7 +73,7 @@ const toggleHabit = async (req: Request, res: Response) => {
     let day = await prisma.day.findFirst({
         where: {
             date: today,
-            userId: req.user.id
+            user_id: req.user.id
         },
         include: {
             DayHabit: true
@@ -149,10 +149,10 @@ const getSummary = async (req: Request, res: Response) => {
             JOIN habits H
                 ON H.id = HWD.habit_id
             WHERE 
-                HWD.week_day = cast(strftime('%w', D.date/1000, 'unixepoch') as int )
+                HWD.week_day = cast(extract(dow from D.date) as int )
         )   as amount
     FROM days D
-    WHERE D.userId = ${req.user.id}
+    WHERE D.user_id = ${req.user.id}
     `
 
     res.status(200);

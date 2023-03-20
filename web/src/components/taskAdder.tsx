@@ -18,15 +18,15 @@ export function TaskAdder() {
     const { register, handleSubmit } = useForm<FormInput>();
     const [ habitWeekDays, setHabitWeekDays ] = useState<number[]>([]);
 
-    const onSubmit: SubmitHandler<FormInput> = (data) => {
+    const onSubmitTask: SubmitHandler<FormInput> = (data) => {
         api.post("/habit", {
             title: data.title,
             description: data.description,
             HabitWeekDays: habitWeekDays
         }).then(() => {
             console.log(`dados enviados, data: ${data}`);
+            window.location.reload();
         }).catch((err) => {console.log(err)})
-        window.location.reload();
     }
 
     const handleChange = (index: number) => {
@@ -45,7 +45,7 @@ export function TaskAdder() {
 
     return (
         <div>
-            <form className="flex flex-col my-5" onSubmit={handleSubmit(onSubmit)} method="post">
+            <form className="flex flex-col my-5" onSubmit={handleSubmit(onSubmitTask)}>
                 <label htmlFor="title">What is the title of the task? </label>
                 <input className="bg-zinc-700 rounded-md px-2" type="text" {...register("title", { required: true })} placeholder="Title" />
                 <label htmlFor="description">Describe the task: </label>

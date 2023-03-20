@@ -12,11 +12,8 @@ type formValues = {
   password: string
 }
 
-type propsType = {
-  token: string
-}
 
-function App(props: propsType) {
+function App() {
   const [message, setMessage] = useState("");
   const [logged, setLogged] = useState(false);
 

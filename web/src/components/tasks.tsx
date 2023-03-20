@@ -42,8 +42,10 @@ export function Tasks() {
                         <div className="overflow-hidden bg-zinc-800 bg-opacity-50 transition-all duration-500 flex flex-col px-4 max-h-0 peer-checked:max-h-40" id="content">
                             <p className="">{post.description}</p>
                             <button className="ml-auto max-w-fit text-red-700" onClick={() => {
-                                api.delete(`/habit/${post.id}`);
-                                window.location.reload();
+                                api.delete(`/habit/${post.id}`)
+                                .then(() => {
+                                    window.location.reload();
+                                });
                             }}>delete</button>
                         </div>
                         

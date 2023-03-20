@@ -28,7 +28,7 @@ const getSpecificHabit = async (req: Request, res: Response) => {
     const habit = await prisma.habit.findUnique({
         where: {
             id: habitID,
-            userId: req.user.id
+            user_id: req.user.id
         },
         include: { HabitWeekDay: true }
     })
@@ -49,11 +49,14 @@ const addHabit = async (req: Request, res: Response) => {
     const { title, description, HabitWeekDays } = reqBody.parse(req.body);
     //zod identifica se as variaveis estão corretas, caso contrário ele retorna um erro
 
+    console.log(req.body);
+    console.log(title, description, HabitWeekDays);
+
     const habit = await prisma.habit.create({
         data: {
             user: {
                 connect: {
-                    id: req.user.id,
+                    email: req.user.email
                 }
             },
             title: title,
@@ -70,6 +73,7 @@ const addHabit = async (req: Request, res: Response) => {
     });
 
     res.status(201);
+    res.json(habit);
 }
 
 
