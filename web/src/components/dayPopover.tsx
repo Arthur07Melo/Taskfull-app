@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { api } from "../lib/axios";
 import isBeforeToday from "../utils/is-before-today";
+import checkTokenValidation from "../utils/check-token-validation";
 
 
 const weekDays = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
@@ -31,10 +32,11 @@ export default function DayPopover(props: propsType) {
         api.get("/day", {
             params: { date: props.date?.toDateString() },
         },)
-            .then(response => {
-                setDayData(response.data);
+            .then(response => setDayData(response.data))
+            .catch((err) =>{
+                checkTokenValidation(err);
+                console.log(err); 
             })
-            .catch(err => console.log(err))
     }, [])
 
 
@@ -51,7 +53,10 @@ export default function DayPopover(props: propsType) {
                                 <Checkbox.Root
                                     defaultChecked={dayData?.completedHabits.includes(habit.id)}
                                     disabled={isBeforeToday(props.date?.toDateString()!)}
-                                    onCheckedChange={(checked) => {api.patch(`/day/${habit.id}/toggle`);}}
+                                    onCheckedChange={(checked) => {
+                                        api.patch(`/day/${habit.id}/toggle`)
+                                            .catch(err => checkTokenValidation(err))
+                                    }}
                                     className="bg-gray-700 w-[25px] h-[25px] mr-3 rounded-md focus:border data-[state=checked]:bg-green-600" id="c1">
 
                                     <Checkbox.Indicator>

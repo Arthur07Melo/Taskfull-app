@@ -23,7 +23,7 @@ function App() {
       password: data.password
     }).then((response) => {
       if(response.status === 200){
-        localStorage.setItem("token", `bearer ${response.data}`)
+        sessionStorage.setItem("token", `bearer ${response.data}`)
         api.defaults.headers.common['Authorization'] = `bearer ${response.data}`;
         setLogged(true);
       }
@@ -32,12 +32,12 @@ function App() {
   }
 
   const logoutHandler = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.reload();
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     api.defaults.headers.common['Authorization'] = `${token}`;
     if(token){
       setLogged(true);

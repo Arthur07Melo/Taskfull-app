@@ -4,6 +4,7 @@ import { Check } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
 import { api } from "../lib/axios";
+import checkTokenValidation from "../utils/check-token-validation";
 
 const weekDays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 
@@ -26,7 +27,10 @@ export function TaskAdder() {
         }).then(() => {
             console.log(`dados enviados, data: ${data}`);
             window.location.reload();
-        }).catch((err) => {console.log(err)})
+        }).catch((err) => {
+            checkTokenValidation(err);
+            console.log(err);
+        })
     }
 
     const handleChange = (index: number) => {

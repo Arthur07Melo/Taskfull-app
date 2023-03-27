@@ -35,7 +35,7 @@ const userAuth = async (req: Request, res: Response, next: NextFunction) => {
         req.user = loggedUser;
         next();
     }catch(err){
-        return res.status(400).json({ message: err });
+        return res.status(401).json({ message: err });
     }
 }
 

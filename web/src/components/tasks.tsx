@@ -1,5 +1,7 @@
+import { AxiosError } from "axios";
 import React, { useState, useEffect } from "react";
 import { api } from "../lib/axios";
+import checkTokenValidation from "../utils/check-token-validation";
 
 
 type PostType = {
@@ -19,7 +21,10 @@ export function Tasks() {
             .then(res => {
                 setPosts(res.data);
             })
-            .catch(err => console.log(err));
+            .catch((err: AxiosError) => {
+                checkTokenValidation(err);
+                console.log(err);
+            });
     }, [])
 
 

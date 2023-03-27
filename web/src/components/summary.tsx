@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getLevel } from "../utils/get-day-level";
 import { api } from "../lib/axios";
 import dayjs from "dayjs";
+import checkTokenValidation from "../utils/check-token-validation";
 
 
 type summaryDay = {
@@ -25,8 +26,13 @@ export default function Summary(){
 
     useEffect(() => {
         api.get("/day/summary")
-            .then(res => setSummary(res.data))
-            .catch(err => console.log(err));
+            .then(res => {
+                setSummary(res.data);
+            })
+            .catch(err =>{
+                checkTokenValidation(err.response);
+                console.log(err);
+            });
     },[])
 
 

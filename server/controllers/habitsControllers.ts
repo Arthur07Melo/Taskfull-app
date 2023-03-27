@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Request, Response } from "express";
 import dayjs from "dayjs";
 
+
 const prisma = new PrismaClient();
 
 const getAllHabits = async (req: Request, res: Response) => {
@@ -28,7 +29,6 @@ const getSpecificHabit = async (req: Request, res: Response) => {
     const habit = await prisma.habit.findUnique({
         where: {
             id: habitID,
-            user_id: req.user.id
         },
         include: { HabitWeekDay: true }
     })
@@ -51,6 +51,7 @@ const addHabit = async (req: Request, res: Response) => {
 
     console.log(req.body);
     console.log(title, description, HabitWeekDays);
+    console.log(dayjs());
 
     const habit = await prisma.habit.create({
         data: {
